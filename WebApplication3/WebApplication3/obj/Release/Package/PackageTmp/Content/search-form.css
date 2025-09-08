@@ -1,0 +1,314 @@
+﻿/* ===========================
+   Base Card
+=========================== */
+.rs-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: auto;
+
+}
+
+/* Card Header */
+.rs-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.rs-card__head h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Wrapper to stretch layout */
+.rs-wrapper {
+  min-height: calc(100vh - 100px); /* Adjust based on header/footer */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Stretching bottom card */
+.rs-card--stretch {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===========================
+   Grid Layout
+=========================== */
+.rs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.rs-field {
+  display: flex;
+  flex-direction: column;
+}
+.rs-field label {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+/* ===========================
+   Inputs
+=========================== */
+.rs-input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid #b8c2cc;
+  font-size: 14px;
+  line-height: 1.6;
+  background: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.rs-input:focus {
+  border-color: #26c6da;
+  box-shadow: 0 0 6px rgba(38, 198, 218, 0.35);
+  outline: none;
+}
+
+/* ===========================
+   Buttons & Actions
+=========================== */
+.rs-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.rs-btn {
+  min-width: 70px;
+  height: 40px;
+  padding: 0 28px;  /* only left & right padding */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 10px;
+  font: 500 14px Arial, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.rs-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+.rs-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+}
+.rs-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Button Variants */
+.rs-btn--primary {
+  background: #e55353;
+  color: #fff;
+}
+
+.rs-btn-primary-icon {
+  background: #e55353 url('Icons/icons8-search-24.png') no-repeat 12px center;
+  background-size: 16px 16px; /* Scale icon properly */
+  
+  color: #fff;
+  font: 500 14px Arial, sans-serif;
+  min-width: 90px;
+  height: 40px;
+  
+  padding-left: 40px; /* space for icon */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+}
+
+.rs-btn-primary-icon:hover {
+  background-color: #e55353; /* darker green on hover */
+  color: #fff;
+}
+
+.rs-btn--warn {
+  background: #f39c12;
+  color: #fff;
+}
+
+.rs-btn-warn-icon {
+  background: #f39c12 url('Icons/icons8-clear-32.png') no-repeat 12px center;
+  background-size: 16px 16px; /* Scale icon properly */
+  
+  color: #fff;
+  font: 500 14px Arial, sans-serif;
+  min-width: 90px;
+  height: 40px;
+  
+  padding-left: 40px; /* space for icon */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+}
+
+.rs-btn-warn-icon:hover {
+  background-color: #f39c12; /* darker green on hover */
+  color: #fff;
+}
+.rs-btn--print {
+  background: #303030;
+  color: #fff;
+}
+
+.rs-btn-print-icon {
+  background: #303030 url('Icons/icons8-print-24.png') no-repeat 12px center;
+  background-size: 16px 16px; /* Scale icon properly */
+  
+  color: #fff;
+  font: 500 14px Arial, sans-serif;
+  min-width: 90px;
+  height: 40px;
+  
+  padding-left: 40px; /* space for icon */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+}
+
+.rs-btn-print-icon:hover {
+  background-color: #303030; /* darker green on hover */
+  color: #fff;
+}
+
+.rs-btn--add {
+  background: #E75480;
+  color: #fff;
+}
+.rs-btn_add-icon {
+  background: #E75480 url('Icons/icons-add.png') no-repeat 12px center;
+  background-size: 16px 16px; /* Scale icon properly */
+  
+  color: #fff;
+  font: 500 14px Arial, sans-serif;
+  min-width: 90px;
+  height: 40px;
+  
+  padding-left: 40px; /* space for icon */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+}
+
+.rs-btn_add-icon:hover {
+  background-color: #E75480; /* darker green on hover */
+  color: #fff;
+}
+
+
+/* FontAwesome icon spacing */
+.rs-btn i {
+  margin-right: 6px;
+  font-size: 16px;
+}
+.rs-btn:before {
+  display: none;
+}
+
+/* ===========================
+   GridView Table
+=========================== */
+.rs-gridview {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.rs-gridview th {
+  background: #1f2d3d;
+  color: #fff;
+  padding: 10px;
+  text-align: left;
+  font-weight: 600;
+}
+.rs-gridview td {
+  padding: 10px;
+  border-bottom: 1px solid #1f2d3d;
+  color: #333;
+}
+.rs-gridview tr:nth-child(even) {
+  background: #f9f9f9;
+}
+.rs-gridview tr:hover {
+  background-color: #e0f7fa;
+  cursor: default;
+}
+
+/* ===========================
+   Responsive Layout
+=========================== */
+@media (max-width: 992px) {
+  .rs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .rs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+        /* Loader Spinner */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #22A2DC;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+.rs-default-gif {
+  display: block;
+  margin: 0 auto;
+  max-width: 200px;
+  position: center;
+}
