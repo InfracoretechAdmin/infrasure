@@ -1,0 +1,179 @@
+﻿body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #007bff, #00c853); /* ✅ Blue → Green gradient */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* ✅ Particle background overlay (optional, keep if you want particles.js) */
+#particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #007bff, #00c853); /* Gradient fallback */
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+}
+
+/* ✅ Login Form */
+.formclass {
+    padding: 30px;
+    margin: 20px auto;
+    box-sizing: border-box;
+    background: #fff;
+    min-height: 550px;
+    width: 380px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+h1, h2 {
+    text-align: center;
+    font-family: 'Segoe UI', 'Times New Roman', sans-serif;
+}
+
+h1 {
+    color: #007bff;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    color: #333;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.formclass p {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.formclass input {
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+/* ✅ Stylish Inputs */
+.formclass input[type="text"],
+.formclass input[type="password"] {
+    border: none;
+    border-bottom: 2px solid #007bff;
+    outline: none;
+    height: 40px;
+    transition: 0.3s;
+}
+
+.formclass input[type="text"]:focus,
+.formclass input[type="password"]:focus {
+    border-bottom: 2px solid #00c853;
+}
+
+/* ✅ Links */
+.formclass a {
+    color: #007bff;
+    font-size: 12px;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+.formclass a:hover {
+    color: #00c853;
+}
+
+/* ✅ Login Button */
+.rs-btn_login {
+    background: linear-gradient(90deg, #007bff, #00c853);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font: 500 14px Arial, sans-serif;
+    height: 42px;
+    width: 100%;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.rs-btn_login:hover {
+    background: linear-gradient(90deg, #0056b3, #009624);
+}
+
+/* ✅ Login Button with Icon */
+.rs-btn_login-icon {
+    background: linear-gradient(90deg, #007bff, #00c853);
+    background-image: url('~/Content/Icons/icons8-save-50.png'), linear-gradient(90deg, #007bff, #00c853);
+    background-repeat: no-repeat;
+    background-position: 12px center, center;
+    background-size: 16px 16px, cover;
+    
+    color: #fff;
+    font: 500 14px Arial, sans-serif;
+    min-width: 100px;
+    height: 42px;
+    padding-left: 40px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+
+.rs-btn_login-icon:hover {
+    background-image: url('~/Content/Icons/icons8-save-50.png'), linear-gradient(90deg, #0056b3, #009624);
+}
+
+/* ✅ Loader Spinner */
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #007bff;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ✅ Fade-in Animation for Form */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ✅ Footer */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(90deg, #007bff, #00c853);
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+}

@@ -1,0 +1,541 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="WebApplication3.SiteMaster" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server"></asp:ContentPlaceHolder>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %></title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href='<%: ResolveUrl("~/Media/Common/Favicon.png?v=1") %>' />
+    <link rel="shortcut icon" type="image/png" href='<%: ResolveUrl("~/Media/Common/Favicon.png") %>' />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server" />
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+    <webopt:bundlereference runat="server" path="~/Content/css" />
+
+    <style>
+        :root{
+            --nav-bg: linear-gradient(90deg, #007bff, #00c853);
+            --sidebar-bg: linear-gradient(180deg, #007bff, #00c853);
+            --page-bg: #ffffff;
+            --text-color: #222;
+            --muted: #5b6470;
+            --card-bg:#fff;
+            --link:#0d6efd;
+        }
+        s
+        /* THEME: Light (default via variables) */
+        body.light-theme{
+            --nav-bg: linear-gradient(90deg, #007bff, #00c853);
+            --sidebar-bg: linear-gradient(180deg, #007bff, #00c853);
+            --page-bg:#ffffff;
+            --text-color:#222;
+            --card-bg:#fff;
+        }
+        /* THEME: Dark */
+        body.dark-theme{
+            --nav-bg: #1f1f1f;
+            --sidebar-bg: #141414;
+            --page-bg:#121212;
+            --text-color:#eaeaea;
+            --card-bg:#1c1c1c;
+            --link:#8ab4f8;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--page-bg);
+            color: var(--text-color);
+        }
+
+        /* ✅ Gradient Header (Navbar) */
+        .navbar-inverse {
+            background: var(--nav-bg);
+            border: none;
+        }
+        .navbar-inverse .navbar-brand img {
+            height: 37px;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: -355px;
+        }
+        .navbar-inverse .navbar-nav > li > a,
+        .navbar-inverse .navbar-brand,
+        .navbar-inverse .navbar-text {
+            color: #fff !important;
+        }
+
+        /* ✅ Sidebar */
+        .sidebar {
+            height: 100vh;
+            width: 250px;
+            background: var(--sidebar-bg);
+            padding-top: 20px;
+            color: #fff;
+            position: fixed;
+            top: 50px; /* below navbar */
+            left: 0;
+            overflow-y: auto;
+            background-size: cover;
+            background-position: center;
+        }
+        .sidebar.overlay {
+            background-blend-mode: overlay;
+        }
+        .sidebar ul { list-style: none; padding: 0; margin: 0; }
+        .sidebar ul li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #f1f1f1;
+            font-size: 14px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .sidebar ul li a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+        .sidebar ul li ul {
+            display: none;
+            list-style: none;
+            padding-left: 25px;
+        }
+        .sidebar ul li.open > ul { display: block; }
+        .sidebar ul li ul li a {
+            font-size: 13px;
+            color: #e0f7fa;
+            padding: 10px 20px;
+        }
+        .sidebar ul li ul li a:hover { color: #ffffff; }
+        .arrow { margin-left: auto; transition: transform 0.3s; }
+        .open > a .arrow { transform: rotate(90deg); }
+
+        /* Sidebar width presets */
+        .sidebar.small { width: 180px; }
+        .sidebar.medium { width: 250px; }
+        .sidebar.large { width: 320px; }
+
+        /* Page content shifts right */
+        .body-content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left .25s ease;
+        }
+        .sidebar.small ~ .body-content { margin-left: 180px; }
+        .sidebar.medium ~ .body-content { margin-left: 250px; }
+        .sidebar.large ~ .body-content { margin-left: 320px; }
+
+        /* Profile dropdown */
+        .profile-menu { position: absolute; right: 20px; top: 10px; }
+        .profile-dropdown { position: relative; display: inline-block; }
+        .profile-button {
+            background: none; border: none; color: white; font-size: 14px;
+            cursor: pointer; display: flex; align-items: center; gap: 12px;
+        }
+        .profile-dropdown-content {
+            display: none; position: absolute; right: 0; background-color: #fff;
+            min-width: 180px; box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1002; border-radius: 6px; overflow: hidden;
+        }
+        .profile-dropdown-content a {
+            color: #333; padding: 10px 15px; text-decoration: none; display: block; font-size: 14px;
+        }
+        .profile-dropdown-content a:hover { background-color: #f1f1f1; }
+        .profile-dropdown:hover .profile-dropdown-content { display: block; }
+
+        /* ✅ Search Dropdown */
+        .search-container {
+            position: absolute; left: 300px; top: 10px; width: 250px;
+        }
+        .search-select {
+            width: 170%;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.5); /* faint border */
+            font-size: 14px;
+            background: transparent;   /* ✅ transparent background */
+            color: #fff;               /* ✅ white text so it’s visible on navbar */
+        }
+
+        /* Dropdown arrow fix for transparent select */
+        .search-select option {
+            background-color: #1f1f1f !important;
+            color: #fff !important;
+        }
+
+        /* ========= THEME CUSTOMIZER ========= */
+        .theme-toggle {
+            position: fixed; right: 20px; top: 50%; transform: translateY(-50%);
+            z-index: 1100; /* above navbar */
+        }
+        .theme-toggle .gear {
+            background: #6f42c1; color: #fff; padding: 12px; border-radius: 50%;
+            font-size: 18px; box-shadow: 0 6px 16px rgba(0,0,0,.25);
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+
+        .theme-customizer {
+            position: fixed; right: -320px; top: 0; width: 300px; height: 100%;
+            background: var(--card-bg); color: var(--text-color);
+            box-shadow: -2px 0 12px rgba(0,0,0,0.25);
+            padding: 18px; z-index: 1099; transition: right .3s ease; overflow-y: auto;
+        }
+        .theme-customizer.open { right: 0; }
+        .theme-customizer h4 { margin: 8px 0 16px; font-size: 18px; }
+        .tc-section { margin-bottom: 18px; }
+        .tc-title { font-weight: 600; margin-bottom: 8px; }
+
+        .palette { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+        .swatch {
+            width: 32px; height: 32px; border-radius: 6px; border: 2px solid transparent;
+            display: inline-block; cursor: pointer;
+        }
+        .swatch.selected { border-color: #6f42c1; }
+
+        .bg-choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .bg-choices img { width: 100%; height: 56px; object-fit: cover; border-radius: 6px; border: 2px solid transparent; cursor: pointer; }
+        .bg-choices img.selected { border-color: #6f42c1; }
+
+        /* Compact mode text size */
+        .sidebar.compact ul li a { font-size: 12px; padding: 8px 12px; }
+    </style>
+</head>
+<body class="light-theme">
+    <form runat="server">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="respond" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+            </Scripts>
+        </asp:ScriptManager>
+
+        <!-- TOP NAVBAR -->
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <!-- ✅ Logo -->
+                    <a class="navbar-brand" runat="server" href="~/">
+                        <img src='<%: ResolveUrl("~/Media/Common/Logo.png") %>' alt="Logo" />
+                    </a>
+                </div>
+
+                <!-- ✅ Searchable Dropdown (DB fill later) -->
+                <div class="search-container">
+                    <asp:DropDownList ID="ddlSearch" runat="server" CssClass="search-select">
+                        <asp:ListItem Text="-- Select --" Value=""></asp:ListItem>
+                    </asp:DropDownList>
+                </div>
+
+                <!-- ✅ PROFILE DROPDOWN -->
+                <div class="profile-menu">
+                    <div class="profile-dropdown">
+                        <button class="profile-button">
+                            <span class="glyphicon glyphicon-user"></span>
+                            <span><%: Context.User.Identity.Name ?? "Rakesh Patra" %></span>
+                            <span class="glyphicon glyphicon-chevron-down"></span>
+                        </button>
+                        <div class="profile-dropdown-content">
+                            <asp:LinkButton ID="BtnViewProfile" runat="server">
+                                <span class="glyphicon glyphicon-user"></span> View Profile
+                            </asp:LinkButton>
+                            <asp:LinkButton ID="lnkLogout" runat="server" CssClass="logout-link" OnClick="lnkLogout_Click">
+                                <span class="glyphicon glyphicon-log-out"></span> Logout
+                            </asp:LinkButton>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ✅ DYNAMIC SIDEBAR MENU -->
+        <div class="sidebar medium" id="AppSidebar">
+            <asp:Literal ID="litMenu" runat="server"></asp:Literal>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+            <hr />
+            <footer>
+                <p>&copy; <%: DateTime.Now.Year %> - Infracore Technologies.</p>
+            </footer>
+        </div>
+
+        <!-- ⚙️ THEME CUSTOMIZER TOGGLE (ASP.NET control) -->
+        <div class="theme-toggle">
+            <asp:LinkButton ID="btnThemeToggle" runat="server" OnClientClick="return false;">
+                <span class="gear glyphicon glyphicon-cog"></span>
+            </asp:LinkButton>
+        </div>
+
+        <!-- 🎨 THEME CUSTOMIZER PANEL -->
+        <div id="themeCustomizer" class="theme-customizer" aria-hidden="true">
+            <h4>Theme Customizer</h4>
+
+            <!-- Layout Options -->
+            <div class="tc-section">
+                <div class="tc-title">Layout Options</div>
+                <asp:RadioButtonList ID="rblLayout" runat="server" RepeatDirection="Vertical">
+                    <asp:ListItem Text="Light" Value="light" Selected="True"></asp:ListItem>
+                    <asp:ListItem Text="Dark" Value="dark"></asp:ListItem>
+                </asp:RadioButtonList>
+            </div>
+
+            <!-- Sidebar Color Options (Palette from your image) -->
+            <div class="tc-section">
+                <div class="tc-title">Sidebar Color Options</div>
+                <div class="palette">
+                    <!-- Gradients -->
+                    <asp:LinkButton ID="sw1" runat="server" CssClass="swatch" OnClientClick="return false;"
+                        Style="background: linear-gradient(135deg,#3ad29f,#41a6ff);" data-bg="linear-gradient(180deg,#3ad29f,#41a6ff)"></asp:LinkButton>
+                    <asp:LinkButton ID="sw2" runat="server" CssClass="swatch" OnClientClick="return false;"
+                        Style="background: linear-gradient(135deg,#ffb36b,#ff5d8f);" data-bg="linear-gradient(180deg,#ffb36b,#ff5d8f)"></asp:LinkButton>
+                    <asp:LinkButton ID="sw3" runat="server" CssClass="swatch" OnClientClick="return false;"
+                        Style="background: linear-gradient(135deg,#a78bfa,#60a5fa);" data-bg="linear-gradient(180deg,#a78bfa,#60a5fa)"></asp:LinkButton>
+                    <asp:LinkButton ID="sw4" runat="server" CssClass="swatch" OnClientClick="return false;"
+                        Style="background: linear-gradient(135deg,#7cd3a8,#a99683);" data-bg="linear-gradient(180deg,#7cd3a8,#a99683)"></asp:LinkButton>
+                    <asp:LinkButton ID="sw5" runat="server" CssClass="swatch" OnClientClick="return false;"
+                        Style="background: linear-gradient(135deg,#6ea8fe,#b197fc);" data-bg="linear-gradient(180deg,#6ea8fe,#b197fc)"></asp:LinkButton>
+                    <asp:LinkButton ID="sw6" runat="server" CssClass="swatch" OnClientClick="return false;"
+                        Style="background: linear-gradient(135deg,#b0846d,#5b5bd6);" data-bg="linear-gradient(180deg,#b0846d,#5b5bd6)"></asp:LinkButton>
+                    <!-- Solids (second row from your image) -->
+                    <asp:LinkButton ID="sw7"  runat="server" CssClass="swatch" OnClientClick="return false;" Style="background:#000"        data-bg="#000000"></asp:LinkButton>
+                    <asp:LinkButton ID="sw8"  runat="server" CssClass="swatch" OnClientClick="return false;" Style="background:#9e9e9e"    data-bg="#9e9e9e"></asp:LinkButton>
+                    <asp:LinkButton ID="sw9"  runat="server" CssClass="swatch" OnClientClick="return false;" Style="background:#8b5cf6"    data-bg="#8b5cf6"></asp:LinkButton>
+                    <asp:LinkButton ID="sw10" runat="server" CssClass="swatch" OnClientClick="return false;" Style="background:#22c55e"    data-bg="#22c55e"></asp:LinkButton>
+                    <asp:LinkButton ID="sw11" runat="server" CssClass="swatch" OnClientClick="return false;" Style="background:#f59e0b"    data-bg="#f59e0b"></asp:LinkButton>
+                    <asp:LinkButton ID="sw12" runat="server" CssClass="swatch" OnClientClick="return false;" Style="background:#3b82f6"    data-bg="#3b82f6"></asp:LinkButton>
+                    <asp:LinkButton ID="sw13" runat="server" CssClass="swatch" OnClientClick="return false;" Style="background:#ef4444"    data-bg="#ef4444"></asp:LinkButton>
+                </div>
+            </div>
+
+            <!-- Sidebar Bg Image -->
+            <div class="tc-section">
+                <div class="tc-title">Sidebar Bg Image</div>
+                <div class="bg-choices">
+                    <asp:ImageButton ID="bg1" runat="server" ImageUrl="~/Media/Sidebar/bg1.jpg" OnClientClick="return false;" />
+                    <asp:ImageButton ID="bg2" runat="server" ImageUrl="~/Media/Sidebar/bg2.jpg" OnClientClick="return false;" />
+                    <asp:ImageButton ID="bg3" runat="server" ImageUrl="~/Media/Sidebar/bg3.jpg" OnClientClick="return false;" />
+                    <asp:ImageButton ID="bg4" runat="server" ImageUrl="~/Media/Sidebar/bg4.jpg" OnClientClick="return false;" />
+                    <asp:ImageButton ID="bg5" runat="server" ImageUrl="~/Media/Sidebar/bg5.jpg" OnClientClick="return false;" />
+                    <asp:ImageButton ID="bg6" runat="server" ImageUrl="~/Media/Sidebar/bg6.jpg" OnClientClick="return false;" />
+                </div>
+                <div style="margin-top:8px;">
+                    <asp:CheckBox ID="chkSidebarBgVisible" runat="server" Text="Sidebar Bg Image Visible" />
+                </div>
+            </div>
+
+            <!-- Compact Menu -->
+            <div class="tc-section">
+                <div class="tc-title">Compact Menu</div>
+                <asp:CheckBox ID="chkCompactMenu" runat="server" Text="Enable Compact Menu" />
+            </div>
+
+            <!-- Sidebar Width -->
+            <div class="tc-section">
+                <div class="tc-title">Sidebar Width</div>
+                <asp:RadioButtonList ID="rblSidebarWidth" runat="server" RepeatDirection="Vertical">
+                    <asp:ListItem Text="Small"  Value="small"></asp:ListItem>
+                    <asp:ListItem Text="Medium" Value="medium" Selected="True"></asp:ListItem>
+                    <asp:ListItem Text="Large"  Value="large"></asp:ListItem>
+                </asp:RadioButtonList>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        // Sidebar submenu toggle (existing behavior)
+        document.addEventListener("click", function (e) {
+            if (e.target.classList.contains("submenu-toggle")) {
+                e.target.parentElement.classList.toggle("open");
+            }
+        });
+
+        // ======= THEME CUSTOMIZER JS (no postbacks, ASP.NET control IDs respected) =======
+        (function () {
+            // Helpers
+            const el = (id) => document.getElementById(id);
+            const qs = (sel, root=document) => root.querySelector(sel);
+            const qsa = (sel, root=document) => Array.prototype.slice.call(root.querySelectorAll(sel));
+            const sidebar = el('AppSidebar');
+            const body = document.body;
+
+            // Control IDs resolved at runtime (in case of naming containers)
+            const themePanel = el('themeCustomizer');
+            const btnToggle = '<%= btnThemeToggle.ClientID %>';
+            const rblLayoutId = '<%= rblLayout.ClientID %>';
+            const rblWidthId  = '<%= rblSidebarWidth.ClientID %>';
+            const chkCompactId = '<%= chkCompactMenu.ClientID %>';
+            const chkBgVisId = '<%= chkSidebarBgVisible.ClientID %>';
+
+            // Open/close panel (above navbar)
+            el(btnToggle).addEventListener('click', function () {
+                themePanel.classList.toggle('open');
+            });
+
+            // Apply & persist
+            function save(key, val) { localStorage.setItem(key, val); }
+            function load(key, def) { return localStorage.getItem(key) ?? def; }
+
+            function applyLayout(theme) {
+                body.classList.remove('light-theme', 'dark-theme');
+                body.classList.add((theme === 'dark' ? 'dark-theme' : 'light-theme'));
+                save('layoutTheme', theme);
+            }
+
+            function applySidebarBg(bg) {
+                if (bg && el(chkBgVisId).checked) {
+                    sidebar.style.backgroundImage = "url('" + bg + "')";
+                } else {
+                    sidebar.style.backgroundImage = 'none';
+                    const savedColor = load('sidebarColor', 'var(--sidebar-bg)');
+                    sidebar.style.background = savedColor;
+                    document.querySelector('.navbar-inverse').style.background = savedColor; // ✅ sync
+                }
+                save('sidebarBgImage', bg || '');
+            }
+
+            function applySidebarBgVisibility(isVisible) {
+                const stored = load('sidebarBgImage', '');
+                if (isVisible && stored) {
+                    sidebar.style.backgroundImage = "url('" + stored + "')";
+                } else {
+                    sidebar.style.backgroundImage = 'none';
+                }
+                save('sidebarBgVisible', isVisible ? '1' : '0');
+            }
+
+            function applySidebarColor(bgCss) {
+                // If a gradient/solid swatch was chosen, set background only if no image is visible
+                save('sidebarColor', bgCss);
+                if (getComputedStyle(sidebar).backgroundImage === 'none' || !el(chkBgVisId).checked) {
+                    sidebar.style.background = bgCss;
+                }
+                if (!el(chkBgVisId).checked) {
+                    sidebar.style.background = bgCss;
+                    document.querySelector('.navbar-inverse').style.background = bgCss; // ✅ update navbar
+                }
+            }
+
+            function applySidebarWidth(sz) {
+                sidebar.classList.remove('small','medium','large');
+                sidebar.classList.add(sz);
+                save('sidebarWidth', sz);
+            }
+
+            function applyCompactMenu(enabled) {
+                sidebar.classList.toggle('compact', !!enabled);
+                save('compactMenu', enabled ? '1' : '0');
+            }
+
+            // Layout radio
+            qsa('input[type=radio]', el(rblLayoutId)).forEach(r => {
+                r.addEventListener('change', function () { applyLayout(this.value); });
+            });
+
+            // Sidebar width radio
+            qsa('input[type=radio]', el(rblWidthId)).forEach(r => {
+                r.addEventListener('change', function () { applySidebarWidth(this.value); });
+            });
+
+            // Compact menu checkbox
+            qs('input[type=checkbox]', el(chkCompactId).parentElement).addEventListener('change', function(){
+                applyCompactMenu(this.checked);
+            });
+
+            // Sidebar bg visible checkbox
+            qs('input[type=checkbox]', el(chkBgVisId).parentElement).addEventListener('change', function(){
+                applySidebarBgVisibility(this.checked);
+            });
+
+            // Swatches (LinkButtons) — prevent postback already via OnClientClick="return false;"
+            qsa('.swatch').forEach(sw => {
+                sw.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    qsa('.swatch').forEach(s => s.classList.remove('selected'));
+                    this.classList.add('selected');
+                    const bgCss = this.getAttribute('data-bg') || this.style.background;
+                    applySidebarColor(bgCss);
+                    // clear image if a color is chosen while image is visible
+                    if (el(chkBgVisId).checked) {
+                        el(chkBgVisId).checked = false;
+                        applySidebarBgVisibility(false);
+                    }
+                });
+            });
+
+            // Background image choices (ImageButtons)
+            qsa('#themeCustomizer .bg-choices img').forEach(img => {
+                img.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    qsa('#themeCustomizer .bg-choices img').forEach(i => i.classList.remove('selected'));
+                    this.classList.add('selected');
+                    // ensure visible
+                    const cb = qs('input[type=checkbox]', el(chkBgVisId).parentElement);
+                    cb.checked = true;
+                    applySidebarBgVisibility(true);
+                    applySidebarBg(this.getAttribute('src'));
+                });
+            });
+
+            // Restore previous selections on load
+            (function restore(){
+                // Theme
+                applyLayout(load('layoutTheme','light'));
+                // Sidebar color (only if bg not visible)
+                const savedColor = load('sidebarColor','');
+                if (savedColor) { sidebar.style.background = savedColor; 
+                document.querySelector('.navbar-inverse').style.background = savedColor; // ✅ sync
+                }
+                // Sidebar width
+                applySidebarWidth(load('sidebarWidth','medium'));
+                // Compact
+                applyCompactMenu(load('compactMenu','0') === '1');
+                // BG visibility & image
+                const vis = load('sidebarBgVisible','0') === '1';
+                qs('input[type=checkbox]', el(chkBgVisId).parentElement).checked = vis;
+                const img = load('sidebarBgImage','');
+                if (vis && img) { sidebar.style.backgroundImage = "url('" + img + "')"; }
+
+                // Set corresponding inputs visually
+                qsa('input[type=radio]', el(rblLayoutId)).forEach(r => { r.checked = (r.value === load('layoutTheme','light')); });
+                qsa('input[type=radio]', el(rblWidthId)).forEach(r => { r.checked = (r.value === load('sidebarWidth','medium')); });
+                qs('input[type=checkbox]', el(chkCompactId).parentElement).checked = (load('compactMenu','0') === '1');
+                // select swatch if color matches
+                if (savedColor) {
+                    qsa('.swatch').forEach(s => {
+                        if ((s.getAttribute('data-bg') || s.style.background) === savedColor) { s.classList.add('selected'); }
+                    });
+                }
+                // select bg image if matches
+                if (img) {
+                    qsa('#themeCustomizer .bg-choices img').forEach(i => {
+                        if (i.getAttribute('src').indexOf(img) !== -1 || i.getAttribute('src') === img) { i.classList.add('selected'); }
+                    });
+                }
+            })();
+        })();
+            $(document).ready(function () {
+        // ASP.NET gives controls a ClientID that may change
+        // Use '<%= ddlSearch.ClientID %>' to get correct ID
+        $('#<%= ddlSearch.ClientID %>').select2({
+            placeholder: "Select a value",
+            allowClear: true
+        });
+    });
+    </script>
+</body>
+</html>
