@@ -10,6 +10,9 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href='<%: ResolveUrl("~/Media/Common/Favicon.png?v=1") %>' />
     <link rel="shortcut icon" type="image/png" href='<%: ResolveUrl("~/Media/Common/Favicon.png") %>' />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
     <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server" />
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
@@ -155,7 +158,19 @@
             position: absolute; left: 300px; top: 10px; width: 250px;
         }
         .search-select {
-            width: 100%; padding: 6px 10px; border-radius: 6px; border: none; font-size: 14px;
+            width: 170%;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.5); /* faint border */
+            font-size: 14px;
+            background: transparent;   /* ✅ transparent background */
+            color: #fff;               /* ✅ white text so it’s visible on navbar */
+        }
+
+        /* Dropdown arrow fix for transparent select */
+        .search-select option {
+            background-color: #1f1f1f !important;
+            color: #fff !important;
         }
 
         /* ========= THEME CUSTOMIZER ========= */
@@ -513,6 +528,14 @@
                 }
             })();
         })();
+            $(document).ready(function () {
+        // ASP.NET gives controls a ClientID that may change
+        // Use '<%= ddlSearch.ClientID %>' to get correct ID
+        $('#<%= ddlSearch.ClientID %>').select2({
+            placeholder: "Select a value",
+            allowClear: true
+        });
+    });
     </script>
 </body>
 </html>

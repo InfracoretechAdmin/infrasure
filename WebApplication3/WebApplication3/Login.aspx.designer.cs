@@ -31,6 +31,15 @@ namespace WebApplication3 {
         protected global::System.Web.UI.WebControls.TextBox Password1;
         
         /// <summary>
+        /// ddlSearch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlSearch;
+        
+        /// <summary>
         /// Button1 control.
         /// </summary>
         /// <remarks>

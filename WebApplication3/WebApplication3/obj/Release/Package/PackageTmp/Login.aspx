@@ -44,6 +44,10 @@
             <asp:TextBox ID="UserName1" CssClass="input" placeholder="User Name" runat="server"></asp:TextBox>
             <p>OTP (One TIme Password)</p>
             <asp:TextBox ID="Password1" CssClass="input" TextMode="Password" placeholder="Enter OTP" runat="server"></asp:TextBox>
+            <p>Select Building</p>
+                    <asp:DropDownList ID="ddlSearch" runat="server" CssClass="search-select">
+                        <asp:ListItem Text="-- Select --" Value=""></asp:ListItem>
+                    </asp:DropDownList>
             <asp:Button ID="Button1" runat="server" Text="Get One Time Password" OnClick="Button1_Click" CssClass="rs-btn_login rs-btn_login-icon" OnClientClick="showLoader();" />
         </div>
     </form>

@@ -53,7 +53,6 @@ h2 {
 .formclass p {
     margin: 0;
     padding: 0;
-    font-weight: bold;
     color: #007bff;
 }
 
@@ -176,4 +175,20 @@ footer {
     color: #fff;
     text-align: center;
     font-size: 12px;
+}
+/* ✅ Dropdown styling same as input */
+.formclass select {
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 14px;
+    height: 40px;
+    border: none;
+    border-bottom: 2px solid #007bff;
+    outline: none;
+    background: transparent;
+    transition: 0.3s;
+}
+
+.formclass select:focus {
+    border-bottom: 2px solid #00c853;
 }
