@@ -54,17 +54,24 @@ namespace WebApplication3
                     int selectedBuildingId = 0;
                     int.TryParse(ddlSearch.SelectedValue, out selectedBuildingId);
 
-                    // ✅ Superadmin bypasses building restriction
+                    // Superadmin bypasses
                     if (userId != 1)
                     {
-                        if (selectedBuildingId == 0 || selectedBuildingId != userBuildingId)
+                        // Ensure selected building matches the one in DB
+                        if (selectedBuildingId == 0)
                         {
-                            // ❌ Building mismatch → show warning toaster
+                            string script = "toastr.warning('Please select a building.', 'Access Denied');";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "toastr", script, true);
+                            return;
+                        }
+                        else if (selectedBuildingId != userBuildingId)
+                        {
                             string script = "toastr.warning('You are not enrolled with the selected building. Contact building admin.', 'Access Denied');";
                             ScriptManager.RegisterStartupScript(this, GetType(), "toastr", script, true);
-                            return; // stop login here
+                            return;
                         }
                     }
+
 
                     // ✅ Save to Session
                     Session["UserId"] = userId;
