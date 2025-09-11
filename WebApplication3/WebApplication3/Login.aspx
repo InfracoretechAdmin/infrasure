@@ -34,23 +34,56 @@
     </div>
 
     <!-- Login Form -->
-    <form runat="server">
-        <div class="formclass">
-            <h1>
-                  <img src="<%: ResolveUrl("~/Media/Login/Login_Logo.png") %>" alt="InfraSure Logo" style="max-width:180px; height:auto; display:block; margin:0 auto;" />
-            </h1>
-            <h2>Welcome to InfraSure</h2>
-            <p>Registered Email</p>
-            <asp:TextBox ID="UserName1" CssClass="input" placeholder="User Name" runat="server"></asp:TextBox>
-            <p>OTP (One TIme Password)</p>
-            <asp:TextBox ID="Password1" CssClass="input" TextMode="Password" placeholder="Enter OTP" runat="server"></asp:TextBox>
-            <p>Select Building</p>
-                    <asp:DropDownList ID="ddlSearch" runat="server" CssClass="search-select">
-                        <asp:ListItem Text="-- Select --" Value=""></asp:ListItem>
-                    </asp:DropDownList>
-            <asp:Button ID="Button1" runat="server" Text="Get One Time Password" OnClick="Button1_Click" CssClass="rs-btn_login rs-btn_login-icon" OnClientClick="showLoader();" />
-        </div>
-    </form>
+<form runat="server">
+    <div class="formclass">
+    <h1>
+        <img src="<%: ResolveUrl("~/Media/Login/Login_Logo.png") %>" 
+             alt="InfraSure Logo" 
+             style="max-width:180px; margin:0 auto;" />
+    </h1>
+    <h2>Welcome to InfraSure</h2>
+
+    <!-- Common Fields -->
+    <p>Select Building</p>
+    <asp:DropDownList ID="ddlSearch" runat="server" CssClass="search-select">
+        <asp:ListItem Text="-- Select --" Value=""></asp:ListItem>
+    </asp:DropDownList>
+
+    <p>Registered Email</p>
+    <asp:TextBox ID="UserName1" CssClass="input" placeholder="User Name" runat="server"></asp:TextBox>
+
+    <!-- Tabs -->
+    <div class="tab-container">
+        <button type="button" class="tab-btn active" onclick="openTab('passwordTab', this)">
+            <i class="fa fa-lock"></i> Login with Password
+        </button>
+        <button type="button" class="tab-btn" onclick="openTab('otpTab', this)">
+            <i class="fa fa-key"></i> Login with OTP
+        </button>
+    </div>
+
+    <!-- Password Tab -->
+    <div id="passwordTab" class="tab-content active">
+        <p>Enter Your Password</p>
+        <asp:TextBox ID="Password1" CssClass="input" TextMode="Password" 
+                     placeholder="Password" runat="server"></asp:TextBox>
+        <asp:Button ID="Button1" runat="server" Text="Login" 
+                    OnClick="Button1_Click" 
+                    CssClass="rs-btn_login" />
+    </div>
+
+    <!-- OTP Tab -->
+    <div id="otpTab" class="tab-content">
+        <p>Enter One Time Password</p>
+        <asp:TextBox ID="Otp" CssClass="input" TextMode="Password" 
+                     placeholder="One Time Password" runat="server"></asp:TextBox>
+        <asp:Button ID="Button2" runat="server" Text="Login with OTP" 
+                    CssClass="rs-btn_login" />
+    </div>
+</div>
+
+
+</form>
 
     <!-- Footer -->
     <footer>
@@ -67,6 +100,16 @@
         window.onload = function () {
             document.getElementById("loader").style.display = "none";
         };
+        function openTab(tabId, btn) {
+            document.querySelectorAll(".tab-content").forEach(tab => {
+                tab.classList.remove("active");
+            });
+            document.querySelectorAll(".tab-btn").forEach(b => {
+                b.classList.remove("active");
+            });
+            document.getElementById(tabId).classList.add("active");
+            btn.classList.add("active");
+        }
     </script>
 
     <!-- Particles Config -->
